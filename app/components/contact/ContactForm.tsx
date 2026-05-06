@@ -22,14 +22,23 @@ export default function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission (mock)
-    setTimeout(() => {
-      console.log('Form submitted:', formData);
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        setSubmitStatus('error');
+        setIsSubmitting(false);
+        return;
+      }
+
       setSubmitStatus('success');
-      setIsSubmitting(false);
-      
-      // Reset form
       setFormData({
         name: '',
         email: '',
@@ -37,12 +46,16 @@ export default function ContactForm() {
         subject: '',
         message: '',
       });
-      
-      // Reset success message after 5 seconds
+
       setTimeout(() => {
         setSubmitStatus('idle');
       }, 5000);
-    }, 1500);
+    } catch (error) {
+      console.error('Contact form submit error:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   return (
