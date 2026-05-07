@@ -1,7 +1,6 @@
 import ContactHero from '../components/contact/ContactHero';
 import ContactForm from '../components/contact/ContactForm';
 import ContactInfo from '../components/contact/ContactInfo';
-import ContactMap from '../components/contact/ContactMap';
 
 export const metadata = {
   title: 'Contact Us - Kaifei Landscaping',
@@ -44,9 +43,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-      
-      {/* Map Section */}
-      {/* <ContactMap /> */}
     </div>
   );
 }
