@@ -1,10 +1,11 @@
 import ContactHero from '../components/contact/ContactHero';
 import ContactForm from '../components/contact/ContactForm';
 import ContactInfo from '../components/contact/ContactInfo';
+import { COMPANY_NAME } from '../constants/text';
 
 export const metadata = {
-  title: 'Contact Us - Kaifei Landscaping',
-  description: 'Get in touch with Kaifei Landscaping for your next outdoor project. We\'re here to help transform your space.',
+  title: `Contact Us - ${COMPANY_NAME}`,
+  description: `Get in touch with ${COMPANY_NAME} for your next outdoor project. We're here to help transform your space.`,
 };
 
 export default function ContactPage() {

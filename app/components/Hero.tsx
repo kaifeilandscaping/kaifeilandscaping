@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { COMPANY_NAME } from '../constants/text';
 
 export default function Hero() {
   return (
@@ -57,7 +58,7 @@ export default function Hero() {
           <div className="hidden lg:block">
             <img 
               src="/home/hero.png" 
-              alt="Beautiful landscaping project by Kaifei Landscape"
+              alt={`Beautiful landscaping project by ${COMPANY_NAME}`}
               className="w-full h-auto max-h-[500px] object-cover rounded-lg shadow-2xl"
             />
           </div>
