@@ -29,18 +29,17 @@ export async function POST(request: Request) {
       reply_to: email,
       text: `You have a new contact request from ${name}.
 
-Subject: ${subject}
-Email: ${email}
-Phone: ${phone || 'N/A'}
+      Subject: ${subject}
+      Email: ${email}
+      Phone: ${phone || 'N/A'}
 
-Message:
-${message}`,
+      Message: ${message}`,
       html: `<p>You have a new contact request from <strong>${name}</strong>.</p>
-<p><strong>Subject:</strong> ${subject}</p>
-<p><strong>Email:</strong> ${email}</p>
-<p><strong>Phone:</strong> ${phone || 'N/A'}</p>
-<p><strong>Message:</strong></p>
-<p>${message.replace(/\n/g, '<br/>')}</p>`,
+      <p><strong>Subject:</strong> ${subject}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Phone:</strong> ${phone || 'N/A'}</p>
+      <p><strong>Message:</strong></p>
+      <p>${message.replace(/\n/g, '<br/>')}</p>`,
     };
 
     const response = await fetch('https://api.resend.com/emails', {
