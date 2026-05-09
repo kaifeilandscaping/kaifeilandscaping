@@ -39,6 +39,26 @@ export default function FreeQuote() {
     setIsLoading(true);
 
     try {
+      const response = await fetch('/api/free-quote', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          address: formData.address,
+          description: formData.description,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        setError(data?.error || 'An error occurred. Please try again.');
+        return;
+      }
+
       setSubmitted(true);
       setFormData({
         name: '',
