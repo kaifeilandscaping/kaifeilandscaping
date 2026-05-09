@@ -1,8 +1,8 @@
 import Link from "next/link";
 import {
   COMPANY_EMAIL,
-  COMPNAY_ADDRESS,
-  COMPNAY_NAME,
+  COMPANY_ADDRESS,
+  COMPANY_NAME,
   PHONE_NUMBER,
 } from "../constants/text";
 import { menus } from "../data/menuData";
@@ -15,7 +15,7 @@ export default function Footer() {
           {/* Company Info */}
           <div>
             <h3 className="text-xl font-bold mb-4 text-white">
-              {COMPNAY_NAME}
+              {COMPANY_NAME}
             </h3>
             <p className="text-sm text-[#b8c9c1] leading-relaxed mb-4">
               Transform your outdoor space with our customized landscape
@@ -129,7 +129,7 @@ export default function Footer() {
                   />
                 </svg>
                 <span className="text-sm text-[#b8c9c1]">
-                  {COMPNAY_ADDRESS}
+                  {COMPANY_ADDRESS}
                 </span>
               </li>
             </ul>
@@ -139,7 +139,7 @@ export default function Footer() {
         {/* Divider */}
         <div className="border-t border-white/10 pt-8">
           <p className="text-xs text-[#7a9085] text-center">
-            ©{new Date().getFullYear()} {COMPNAY_NAME}. All rights reserved.
+            ©{new Date().getFullYear()} {COMPANY_NAME}. All rights reserved.
           </p>
         </div>
       </div>

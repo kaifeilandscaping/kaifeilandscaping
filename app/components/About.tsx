@@ -1,3 +1,5 @@
+import { COMPANY_NAME } from '../constants/text';
+
 export default function About() {
   return (
     <section id="about" className="py-16 md:py-24 bg-white">
@@ -22,7 +24,7 @@ export default function About() {
         {/* Architectural Illustration - Placeholder */}
         <div className="w-full max-w-4xl mx-auto">
           <div className="relative w-full">
-            <img src="/home/hero.png" alt="Kaifei Landscaping Hero" />
+            <img src="/home/hero.png" alt={`${COMPANY_NAME} Hero`} />
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { menus } from '../data/menuData';
-import { COMPNAY_NAME } from '../constants/text';
+import { COMPANY_NAME } from '../constants/text';
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -26,7 +26,7 @@ export default function Header() {
           <Link href="/" className="flex items-center gap-4" onClick={closeMobileMenu}>
             <Image
               src="/logo.png"
-              alt="Kaifei Landscape Logo"
+              alt={`${COMPANY_NAME} Logo`}
               width={48}
               height={48}
               className="h-12 w-12 object-contain"
@@ -34,7 +34,7 @@ export default function Header() {
             />
             <div>
               <h1 className="text-2xl font-bold text-[#2d4a3e] leading-tight">
-                {COMPNAY_NAME}
+                {COMPANY_NAME}
               </h1>
               <p className="text-xs text-[#7a9085] font-light">
                 Customized design within budget
