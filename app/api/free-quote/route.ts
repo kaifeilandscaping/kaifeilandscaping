@@ -1,6 +1,8 @@
 'use server';
 
 import { NextResponse } from 'next/server';
+import { sendEmail } from '../utils/resend';
+import { COMPANY_EMAIL } from '@/app/constants/text';
 
 export async function POST(request: Request) {
   try {
@@ -11,19 +13,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const apiKey = process.env.RESEND_API_KEY;
     const fromEmail = process.env.RESEND_FROM_EMAIL;
-    const toEmail = process.env.RESEND_TO_EMAIL || 'kaifeisherry@gmail.com';
-
-    if (!apiKey || !fromEmail || !toEmail) {
-      return NextResponse.json(
-        { error: 'Email service is not configured. Please set RESEND_API_KEY, RESEND_FROM_EMAIL, and RESEND_TO_EMAIL.' },
-        { status: 500 }
-      );
-    }
+    const toEmail = process.env.RESEND_TO_EMAIL || COMPANY_EMAIL;
 
     const emailPayload = {
-      from: fromEmail,
+      from: fromEmail || '',
       to: toEmail,
       subject: `New free quote request from ${name}`,
       reply_to: email,
@@ -42,22 +36,7 @@ Project description:\n${description}`,
       <p>${description.replace(/\n/g, '<br/>')}</p>`,
     };
 
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify(emailPayload),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Resend API error:', response.status, errorText);
-      return NextResponse.json({ error: 'Failed to send email.' }, { status: 502 });
-    }
-
-    return NextResponse.json({ success: true });
+    return await sendEmail(emailPayload);
   } catch (error) {
     console.error('Free quote API error:', error);
     return NextResponse.json({ error: 'An unexpected error occurred.' }, { status: 500 });
