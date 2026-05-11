@@ -188,11 +188,11 @@ export default function GalleryPage() {
               </button>
 
               {currentPhoto && (
-                <div>
+                <div className="max-h-[calc(100vh-2rem)] overflow-hidden">
                   <img
                     src={currentPhoto.imageUrl}
                     alt={currentPhoto.title}
-                    className="w-full h-auto"
+                    className="w-full h-auto max-h-[calc(100vh-2rem)] object-contain"
                   />
                 </div>
               )}
