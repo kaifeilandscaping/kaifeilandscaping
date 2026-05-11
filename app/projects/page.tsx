@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { projects, Project } from '@/app/data/projectsData';
-import 'mapbox-gl/dist/mapbox-gl.css';
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
 
