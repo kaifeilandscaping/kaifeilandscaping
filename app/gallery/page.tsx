@@ -1,15 +1,60 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { galleryCategories } from '@/app/data/galleryData';
 
 export default function GalleryPage() {
   const [activeCategory, setActiveCategory] = useState(galleryCategories[0].id);
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
   const currentCategory = galleryCategories.find(
     (cat) => cat.id === activeCategory
   );
+  const currentIndex = currentCategory?.photos.findIndex(
+    (photo) => photo.id === selectedPhoto
+  );
+  const currentPhoto = currentCategory?.photos[currentIndex ?? -1] ?? null;
+
+  useEffect(() => {
+    if (!selectedPhoto) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setSelectedPhoto(null);
+        return;
+      }
+
+      if (!currentCategory || currentIndex === undefined || currentIndex < 0) {
+        return;
+      }
+
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        const nextIndex =
+          currentIndex + 1 >= currentCategory.photos.length
+            ? 0
+            : currentIndex + 1;
+        setSelectedPhoto(currentCategory.photos[nextIndex].id);
+      } else if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        const prevIndex =
+          currentIndex <= 0
+            ? currentCategory.photos.length - 1
+            : currentIndex - 1;
+        setSelectedPhoto(currentCategory.photos[prevIndex].id);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedPhoto, currentCategory, currentIndex]);
+
+  useEffect(() => {
+    if (selectedPhoto && modalRef.current) {
+      modalRef.current.focus();
+    }
+  }, [selectedPhoto]);
 
   return (
     <section id="gallery" className="py-16 md:py-24 bg-white">
@@ -81,9 +126,13 @@ export default function GalleryPage() {
           <div
             className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
             onClick={() => setSelectedPhoto(null)}
+            role="dialog"
+            aria-modal="true"
           >
             <div
-              className="relative max-w-4xl w-full bg-white rounded-lg overflow-hidden"
+              ref={modalRef}
+              tabIndex={-1}
+              className="relative max-w-4xl w-full bg-white rounded-lg overflow-hidden focus:outline-none"
               onClick={(e) => e.stopPropagation()}
             >
               <button
@@ -106,20 +155,47 @@ export default function GalleryPage() {
                 </svg>
               </button>
 
-              {currentCategory.photos.map((photo) => {
-                if (photo.id === selectedPhoto) {
-                  return (
-                    <div key={photo.id}>
-                      <img
-                        src={photo.imageUrl}
-                        alt={photo.title}
-                        className="w-full h-auto"
-                      />
-                    </div>
-                  );
-                }
-                return null;
-              })}
+              <button
+                onClick={() => {
+                  const activeIndex = currentIndex ?? -1;
+                  if (activeIndex < 0) return;
+                  const prevIndex =
+                    activeIndex > 0
+                      ? activeIndex - 1
+                      : currentCategory.photos.length - 1;
+                  setSelectedPhoto(currentCategory.photos[prevIndex].id);
+                }}
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 rounded-full p-3 shadow hover:bg-white transition-colors z-10"
+                aria-label="Previous photo"
+              >
+                ‹
+              </button>
+
+              <button
+                onClick={() => {
+                  const activeIndex = currentIndex ?? -1;
+                  if (activeIndex < 0) return;
+                  const nextIndex =
+                    activeIndex + 1 < currentCategory.photos.length
+                      ? activeIndex + 1
+                      : 0;
+                  setSelectedPhoto(currentCategory.photos[nextIndex].id);
+                }}
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 rounded-full p-3 shadow hover:bg-white transition-colors z-10"
+                aria-label="Next photo"
+              >
+                ›
+              </button>
+
+              {currentPhoto && (
+                <div>
+                  <img
+                    src={currentPhoto.imageUrl}
+                    alt={currentPhoto.title}
+                    className="w-full h-auto"
+                  />
+                </div>
+              )}
             </div>
           </div>
         )}
